@@ -1,47 +1,69 @@
-# 🍲 Ingredient-Based Recipe Recommender System
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Indian Recipe Recommender</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 40px;
+            background: #fdfdfd;
+        }
+        h1 {
+            color: #2c3e50;
+        }
+        form {
+            margin-bottom: 30px;
+        }
+        input[type="text"] {
+            width: 60%;
+            padding: 10px;
+            margin-right: 10px;
+        }
+        input[type="submit"] {
+            padding: 10px 20px;
+        }
+        .recipe {
+            margin-top: 20px;
+            padding: 15px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            background: #f9f9f9;
+        }
+        .recipe h3 {
+            margin: 0;
+            color: #16a085;
+        }
+        .recipe p {
+            margin: 5px 0;
+        }
+        .no-results {
+            color: red;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Recipe Recommendation System</h1>
+    <form method="POST" action="/recommend">
+        <label for="ingredients">Enter ingredients (comma-separated):</label><br><br>
+        <input type="text" name="ingredients" id="ingredients" placeholder="e.g. tomato, onion, garlic" required>
+        <input type="submit" value="Get Recipes">
+    </form>
 
-A final-year BCA project that recommends Indian recipes based on the ingredients entered by the user. It uses Natural Language Processing to match user input with a dataset of 6500+ recipes and displays relevant results with details and instructions.
-
----
-
-## 🔍 Features
-
-- Enter ingredients like: `onion, tomato, garlic`
-- Matches recipes using TF-IDF and Cosine Similarity
-- Displays:
-  - Recipe Name
-  - Ingredients
-  - Instructions
-  - Cooking Time
-  - Recipe URL
-
----
-
-## 💻 Technologies Used
-
-- **Python**
-- **Flask** – for creating the web app
-- **Pandas** – for data handling
-- **Scikit-learn** – for NLP (TF-IDF & Cosine Similarity)
-- **HTML/CSS** – for the frontend
-
----
-
-## 📁 Dataset
-
-- 6500+ Indian recipes
-- Fields include:
-  - Ingredients
-  - Instructions
-  - Time required
-  - Cuisine & diet
-  - Recipe links
-
----
-
-## 🚀 How to Run
-
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/yourusername/recipe-recommender.git
-   cd recipe-recommender
+    {% if recommendations %}
+        <h2>Top Recipes:</h2>
+        {% for recipe in recommendations %}
+        <div class="recipe">
+            <h3>{{ recipe.TranslatedRecipeName }}</h3>
+            <p><strong>Ingredients:</strong> {{ recipe.TranslatedIngredients }}</p>
+            <p><strong>Instructions:</strong> {{ recipe.TranslatedInstructions }}</p>
+            <p><strong>Total Time:</strong> {{ recipe.TotalTimeInMins }} minutes</p>
+            <p><a href="{{ recipe.URL }}" target="_blank">View Full Recipe</a></p>
+        </div>
+        {% endfor %}
+    {% elif recommendations is defined %}
+        <p class="no-results">No matching recipes found. Please enter valid ingredients.</p>
+    {% endif %}
+</body>
+</html>
